@@ -1,15 +1,66 @@
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import Alert from "../components/Alert";
 
 const ActivationAccount = () => {
-    return (
-      <div>
+  const [alert, setAlert] = useState({});
+  const [accountConfirmed, setAccountConfirmed] = useState(false);
+
+  //get token by url
+  const params = useParams();
+  const { id } = params;
+
+
+  useEffect(() => {
+    const confirmAccount = async () => {
+      try {
+        const url = `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/users/verification/${id}`;
+        const { data } = await axios.get(url);
+
+        setAlert({
+          msg: data.msg,
+          error: false,
+        });
+
+        setAccountConfirmed(true);
+      } catch (error) {
+        setAlert({
+          msg: error.response.data.msg,
+          error: true,
+        });
+      }
+    };
+
+    confirmAccount();
+  }, []);
+
+  const { msg } = alert;
+  return (
+    <div>
       <h1 className="text-primary text-3xl capitalize font-bold">
         Activate you Password
       </h1>
-      <span className="text-secondary font-Poppins">Start managing your projects</span>
-  
-     
+      <span className="text-secondary font-Poppins">
+        Start managing your projects
+      </span>
+
+      <div className="mt-20 md:mt-10 shadow-lg px-5 py-10 rounded-xl bg-white">
+        {msg && <Alert alert={alert} />}
+
+        {accountConfirmed && (
+          <Link
+            className="block text-center my-5 text-primary uppercase text-sm"
+            to={"/"}
+          >
+            Login
+          </Link>
+        )}
+      </div>
     </div>
-    )
-  }
-  
-  export default ActivationAccount
+  );
+};
+
+export default ActivationAccount;

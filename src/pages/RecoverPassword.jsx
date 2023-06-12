@@ -1,5 +1,42 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Alert from "../components/Alert";
+
 const RecoverPassword = () => {
+  const [email, setEmail] = useState("");
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (email === "" || email.length < 6) {
+      setAlert({
+        msg: "Email required",
+        error: true,
+      });
+
+      return
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/recover-password`,
+        { email }
+      );
+      setAlert({
+        msg: data.msg,
+        error: false,
+      });
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
+  };
+
+  const { msg } = alert;
   return (
     <div>
       <h1 className="text-primary text-3xl capitalize font-bold">
@@ -9,7 +46,12 @@ const RecoverPassword = () => {
         Don&apos;t lose your projects
       </span>
 
-      <form className="my-10 bg-white shadow rounded-xl p-10 font-Poppins">
+      {msg  && <Alert alert={alert}/>}
+
+      <form
+        className="my-10 bg-white shadow rounded-xl p-10 font-Poppins"
+        onSubmit={handleSubmit}
+      >
         <div className="my-5">
           <label
             className="flex justify-start text-secondary-light  text-lg font-medium"
@@ -22,6 +64,8 @@ const RecoverPassword = () => {
             type="email"
             placeholder="Email"
             className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray focus:border-primary focus:outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
