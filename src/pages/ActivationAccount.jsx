@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import axiosClient from "../config/axiosClient";
 import Alert from "../components/Alert";
 
 const ActivationAccount = () => {
@@ -15,10 +15,8 @@ const ActivationAccount = () => {
   useEffect(() => {
     const confirmAccount = async () => {
       try {
-        const url = `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/users/verification/${id}`;
-        const { data } = await axios.get(url);
+        const url = `/users/verification/${id}`;
+        const { data } = await axiosClient(url);
 
         setAlert({
           msg: data.msg,

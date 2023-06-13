@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import axiosClient from "../config/axiosClient";
 import Alert from "../components/Alert";
 
 const NewPassword = () => {
@@ -11,13 +11,11 @@ const NewPassword = () => {
 
   const params = useParams();
   const { token } = params;
-  console.log("TOKEN", token);
+
   useEffect(() => {
     const checkToken = async () => {
       try {
-        await axios(
-          `http://localhost:4000/api/users/recover-password/${token}`
-        );
+        await axiosClient(`users/recover-password/${token}`);
         setValidtoken(true);
       } catch (error) {
         setAlert({
@@ -42,13 +40,14 @@ const NewPassword = () => {
     }
 
     try {
-      const url = `http://localhost:4000/api/users/recover-password/${token}`;
+      const url = `/users/recover-password/${token}`;
 
-      const { data } = await axios.post(url, { password });
+      const { data } = await axiosClient.post(url, { password });
       setAlert({
         msg: data.msg,
         error: false,
       });
+
       setPasswordModified(true);
     } catch (error) {
       setAlert({
