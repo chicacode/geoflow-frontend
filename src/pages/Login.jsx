@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../config/axiosClient";
 import Alert from "../components/Alert";
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState({});
+
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
 
@@ -26,9 +29,11 @@ const Login = () => {
         email,
         password,
       });
-      localStorage.setItem("token", data.token);
-
       setAlert({});
+      localStorage.setItem("token", data.token);
+      setAuth(data)
+
+     
       // navigate("/projects");
     } catch (error) {
       setAlert({
