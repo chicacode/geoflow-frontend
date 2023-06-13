@@ -16,7 +16,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="recover-password" element={<RecoverPassword />} />
-          <Route path="new-password/:token" element={<NewPassword />} />
+          <Route path="recover-password/:token" element={<NewPassword />} />
           <Route path="activation/:id" element={<ActivationAccount />} />
         </Route>
 

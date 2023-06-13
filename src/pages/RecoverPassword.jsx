@@ -20,6 +20,7 @@ const RecoverPassword = () => {
     }
 
     try {
+      // TODO: Move axios client
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users/recover-password`,
         { email }
