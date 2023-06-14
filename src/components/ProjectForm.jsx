@@ -1,21 +1,46 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import useProjects from "../hooks/useProjects";
+import Alert from "./Alert";
 
 const ProjectForm = () => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [dateDelivered, setDateDelivered] = useState("");
+  const [client, setClient] = useState("");
 
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [dateDelivered, setDateDelivered] = useState('')
-    const [client, setClient] = useState('')
+  const params = useParams();
+  const { showAlert, alert, submitProject } = useProjects();
 
-    const handleSubmit = async (e) => {
-         e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    //validate
+
+    if ([name, description, dateDelivered, client].includes("")) {
+      showAlert({
+        msg: "All fields are required",
+        error: true,
+      });
+      return;
     }
+
+    await submitProject({ name, description, dateDelivered, client });
+
+    setName('')
+    setDescription('')
+    setDateDelivered('')
+    setClient('')
+  };
+
+  const { msg } = alert;
   return (
-    <form className='bg-white py-10 px-5 md:w-1/2 rounded-lg shadow'
-    onSubmit={handleSubmit}
+    <form
+      className="bg-white py-10 px-5 lg:w-1/2 rounded-lg shadow"
+      onSubmit={handleSubmit}
     >
-      <div className='mb-5'>
+      {msg && <Alert alert={alert} />}
+      <div className="mb-5">
         <label
           htmlFor="name"
           className="text-grayText uppercase font-Poppins text-sm"
@@ -32,14 +57,14 @@ const ProjectForm = () => {
         />
       </div>
 
-      <div className='mb-5'>
+      <div className="mb-5">
         <label
           htmlFor="description"
           className="text-grayText uppercase font-Poppins text-sm"
         >
           Description
         </label>
-        <input
+        <textarea
           id="description"
           type="text"
           placeholder="Project Description"
@@ -49,24 +74,23 @@ const ProjectForm = () => {
         />
       </div>
 
-      <div className='mb-5'>
+      <div className="mb-5">
         <label
-          htmlFor="dateDelivered"
+          htmlFor="date-delivered"
           className="text-grayText uppercase font-Poppins text-sm"
         >
           Date Delivery
         </label>
         <input
-          id="dateDelivered"
+          id="date-delivered"
           type="date"
-          placeholder="dateDelivered"
           className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
           value={dateDelivered}
           onChange={(e) => setDateDelivered(e.target.value)}
         />
       </div>
 
-      <div className='mb-5'>
+      <div className="mb-5">
         <label
           htmlFor="client"
           className="text-grayText uppercase font-Poppins text-sm"
@@ -83,7 +107,11 @@ const ProjectForm = () => {
         />
       </div>
 
-      <input type="submit" value={'Create new project'} className='bg-secondary my-5 w-full py-3 text-white uppercase font-bold rounded-lg hover:cursor-pointer hover:bg-primary hover:text-secondary transition-colors'/>
+      <input
+        type="submit"
+        value={"Create new project"}
+        className="bg-secondary my-5 w-full py-3 text-white uppercase font-bold rounded-lg hover:cursor-pointer hover:bg-primary hover:text-secondary transition-colors"
+      />
     </form>
   );
 };
