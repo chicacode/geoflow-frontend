@@ -8,6 +8,8 @@ const ProjectContext = createContext();
 const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [alert, setAlert] = useState({});
+  const [project, setProject] = useState({});
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
 
@@ -73,9 +75,39 @@ const ProjectProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const getProject = async id =>{
+    setLoading(true)
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient(`/projects/${id}`, config)
+      setProject(data)
+      setAlert({})
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error:true
+      })
+
+      setTimeout(() =>{
+        setAlert({})
+      }, 3000)
+    }finally{
+      setLoading(false)
+    }
+  }
   return (
     <ProjectContext.Provider
-      value={{ projects, setProjects, alert, showAlert, submitProject }}
+      value={{ projects, setProjects, alert, showAlert, submitProject, getProject, project, loading }}
     >
       {children}
     </ProjectContext.Provider>

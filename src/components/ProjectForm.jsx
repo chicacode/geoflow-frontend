@@ -4,13 +4,25 @@ import useProjects from "../hooks/useProjects";
 import Alert from "./Alert";
 
 const ProjectForm = () => {
+  const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [dateDelivered, setDateDelivered] = useState("");
   const [client, setClient] = useState("");
 
   const params = useParams();
-  const { showAlert, alert, submitProject } = useProjects();
+  const { showAlert, alert, submitProject, project } = useProjects();
+
+  // If ID exists = edit else = new project
+  useEffect(() => {
+    if (params.id) {
+      setId(project._id);
+      setName(project.name);
+      setDescription(project.description);
+      setDateDelivered(project.dateDelivered?.split('T')[0])
+      setClient(project.client);
+    }
+  }, [params]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,10 +39,10 @@ const ProjectForm = () => {
 
     await submitProject({ name, description, dateDelivered, client });
 
-    setName('')
-    setDescription('')
-    setDateDelivered('')
-    setClient('')
+    setName("");
+    setDescription("");
+    setDateDelivered("");
+    setClient("");
   };
 
   const { msg } = alert;
@@ -109,8 +121,8 @@ const ProjectForm = () => {
 
       <input
         type="submit"
-        value={"Create new project"}
-        className="bg-secondary my-5 w-full py-3 text-white uppercase font-bold rounded-lg hover:cursor-pointer hover:bg-primary hover:text-secondary transition-colors"
+        value={id ? "Update project" : "Create project"}
+        className="bg-secondary my-5 w-full py-3 text-white uppercase rounded-lg hover:cursor-pointer hover:bg-primary hover:text-secondary transition-colors"
       />
     </form>
   );

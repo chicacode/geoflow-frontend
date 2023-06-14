@@ -8,7 +8,8 @@ import NewPassword from "./pages/NewPassword";
 import ActivationAccount from "./pages/ActivationAccount";
 import Projects from "./pages/Projects";
 import NewProject from "./pages/NewProject";
-import Project from "./pages/Project"
+import Project from "./pages/Project";
+import UpdateProject from "./pages/UpdateProject";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProjectProvider } from "./context/ProjectProvider";
@@ -34,6 +35,7 @@ function App() {
               <Route index element={<Projects />} />
               <Route path="create-project" element={<NewProject />} />
               <Route path=":id" element={<Project />} />
+              <Route path="edit/:id" element={<UpdateProject />} />
             </Route>
           </Routes>
         </ProjectProvider>
