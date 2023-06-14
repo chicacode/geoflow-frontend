@@ -46,6 +46,49 @@ const ProjectProvider = ({ children }) => {
   };
 
   const submitProject = async (project) => {
+   if(project.id){
+    await updateProject(project)
+   }else{
+    await createProject(project)
+   }
+  };
+
+  const updateProject = async project => {
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.put(`/projects/${project.id}`, project, config)
+
+     // Sync State
+
+     const updatedProjects = projects.map(projectState => projectState._id === data._id ? data : projectState)
+// TODO FIX this
+    setProjects(updatedProjects)
+
+
+     //Show alert
+      setAlert({
+        msg: "Project updated correctly",
+        error: false,
+      });
+
+      // Redirect user
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  const createProject = async project =>{
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -74,8 +117,7 @@ const ProjectProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  };
-
+  }
   const getProject = async id =>{
     setLoading(true)
     try {
