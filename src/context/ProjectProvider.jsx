@@ -6,8 +6,10 @@ import axiosClient from "../config/axiosClient";
 const ProjectContext = createContext();
 
 const ProjectProvider = ({ children }) => {
+  const [projects, setProjects] = useState([]);
+  const [alert, setAlert] = useState({})
   return (
-    <ProjectContext.Provider value={{}}>{children}</ProjectContext.Provider>
+    <ProjectContext.Provider value={{projects, setProjects}}>{children}</ProjectContext.Provider>
   );
 };
 ProjectProvider.propTypes = {

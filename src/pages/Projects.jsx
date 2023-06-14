@@ -1,7 +1,9 @@
+import useProjects from "../hooks/useProjects"
 // import Alert from "../components/Alert"
 
 const Projects = () => {
-
+  const { projects } = useProjects()
+  console.log(projects)
     // const { msg }  = alert;
   return (
     <>

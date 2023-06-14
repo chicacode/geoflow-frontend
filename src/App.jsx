@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
-import ProtectedRoute from './layouts/ProtectedRoute';
+import ProtectedRoute from "./layouts/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RecoverPassword from "./pages/RecoverPassword";
@@ -10,29 +10,31 @@ import Projects from "./pages/Projects";
 import NewProject from "./pages/NewProject";
 
 import { AuthProvider } from "./context/AuthProvider";
+import { ProjectProvider } from "./context/ProjectProvider";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          {/* public */}
-          <Route path="/" element={<AuthLayout />}>
-            <Route index element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="recover-password" element={<RecoverPassword />} />
-            <Route path="recover-password/:token" element={<NewPassword />} />
-            <Route path="activation/:id" element={<ActivationAccount />} />
-          </Route>
+        <ProjectProvider>
+          <Routes>
+            {/* public */}
+            <Route path="/" element={<AuthLayout />}>
+              <Route index element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="recover-password" element={<RecoverPassword />} />
+              <Route path="recover-password/:token" element={<NewPassword />} />
+              <Route path="activation/:id" element={<ActivationAccount />} />
+            </Route>
 
-          {/* private */}
+            {/* private */}
 
-          <Route path="/projects" element={<ProtectedRoute />}>
-            <Route index element={<Projects />} />
-            <Route path="create-project" element={<NewProject />}  />
-
-          </Route>
-        </Routes>
+            <Route path="/projects" element={<ProtectedRoute />}>
+              <Route index element={<Projects />} />
+              <Route path="create-project" element={<NewProject />} />
+            </Route>
+          </Routes>
+        </ProjectProvider>
       </AuthProvider>
     </BrowserRouter>
   );
