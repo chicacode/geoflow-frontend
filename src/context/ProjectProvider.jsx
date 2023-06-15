@@ -196,7 +196,7 @@ const ProjectProvider = ({ children }) => {
     if (task.id) {
       await updateTask(task);
     } else {
-      console.log("Entra en create")
+      console.log("Entra en create");
       await createTask(task);
     }
   };
@@ -214,9 +214,12 @@ const ProjectProvider = ({ children }) => {
       };
 
       const { data } = await axiosClient.post(`/tasks`, task, config);
-      setAlert({});
 
-      console.log(data);
+      // Update state
+      const projectUpdated = { ...project };
+      projectUpdated.tasks = [...projectUpdated.tasks, data];
+      setProject(projectUpdated);
+      setAlert({});
       setModalFormTask(false);
     } catch (error) {
       console.log(error);
@@ -236,39 +239,40 @@ const ProjectProvider = ({ children }) => {
       };
 
       const { data } = await axiosClient.put(`/tasks/${task.id}`, task, config);
-      setAlert({});
 
-      console.log(data);
+      // Update state
+      const projectUpdated = { ...project };
+      projectUpdated.tasks = [...projectUpdated.tasks, data];
+      setProject(projectUpdated);
+      setAlert({});
       setModalFormTask(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const completeTask = async id => {
+  const completeTask = async (id) => {
     try {
-        const token = localStorage.getItem('token')
-        if(!token) return
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
-        }
-        const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config)
-        setTask({})
-        setAlert({})
-        console.log(data)
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config);
+      setTask({});
+      setAlert({});
+      console.log(data);
 
-        // socket
-        // socket.emit('cambiar estado', data)
-
+      // socket
+      // socket.emit('cambiar estado', data)
     } catch (error) {
-        console.log(error.response)
+      console.log(error.response);
     }
-    
-}
+  };
 
   return (
     <ProjectContext.Provider
@@ -286,7 +290,7 @@ const ProjectProvider = ({ children }) => {
         handleModalTask,
         task,
         submitTask,
-        completeTask
+        completeTask,
       }}
     >
       {children}
