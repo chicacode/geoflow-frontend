@@ -245,6 +245,31 @@ const ProjectProvider = ({ children }) => {
     }
   };
 
+  const completeTask = async id => {
+    try {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config)
+        setTask({})
+        setAlert({})
+        console.log(data)
+
+        // socket
+        // socket.emit('cambiar estado', data)
+
+    } catch (error) {
+        console.log(error.response)
+    }
+    
+}
+
   return (
     <ProjectContext.Provider
       value={{
@@ -261,6 +286,7 @@ const ProjectProvider = ({ children }) => {
         handleModalTask,
         task,
         submitTask,
+        completeTask
       }}
     >
       {children}

@@ -184,7 +184,7 @@ const MofalFormTask = () => {
 
                     <input
                       type="submit"
-                      value={id ? "Update project" : "Create project"}
+                      value={id ? "Update Task" : "Create Task"}
                       className="bg-secondary my-5 w-full py-3 text-white uppercase rounded-lg hover:cursor-pointer hover:bg-primary hover:text-secondary transition-colors"
                     />
                   </form>
