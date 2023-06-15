@@ -37,7 +37,7 @@ const ProjectForm = () => {
       return;
     }
 
-    await submitProject({ name, description, dateDelivered, client });
+    await submitProject({ id, name, description, dateDelivered, client });
     setId(null);
     setName("");
     setDescription("");
