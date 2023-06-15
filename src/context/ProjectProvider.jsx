@@ -10,7 +10,8 @@ const ProjectProvider = ({ children }) => {
   const [alert, setAlert] = useState({});
   const [project, setProject] = useState({});
   const [loading, setLoading] = useState(false);
-  
+  const [modalFormTask, setModalFormTask] = useState(false);
+  const [task, setTask] = useState({});
 
   const navigate = useNavigate();
 
@@ -178,14 +179,72 @@ const ProjectProvider = ({ children }) => {
         error: false,
       });
 
-      setTimeout(() =>{
-        setAlert({})
-        navigate('/projects')
-      }, 3000)
+      setTimeout(() => {
+        setAlert({});
+        navigate("/projects");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleModalTask = () => {
+    setModalFormTask(!modalFormTask);
+  };
+
+  const submitTask = async (task) => {
+    if (task.id) {
+      await updateTask(task);
+    } else {
+      console.log("Entra en create")
+      await createTask(task);
+    }
+  };
+
+  const createTask = async (task) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(`/tasks`, task, config);
+      setAlert({});
+
+      console.log(data);
+      setModalFormTask(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateTask = async (task) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.put(`/tasks/${task.id}`, task, config);
+      setAlert({});
+
+      console.log(data);
+      setModalFormTask(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -198,6 +257,10 @@ const ProjectProvider = ({ children }) => {
         project,
         loading,
         deleteProject,
+        modalFormTask,
+        handleModalTask,
+        task,
+        submitTask,
       }}
     >
       {children}

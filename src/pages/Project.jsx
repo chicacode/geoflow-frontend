@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import MofalFormTask from "../components/ModalFormTask";
 
 const Project = () => {
-  const [modalFormTask, setModalFormTask] = useState(false)
   const params = useParams();
-  const { getProject, project, loading } = useProjects();
+  const { getProject, project, loading, handleModalTask } = useProjects();
 
   useEffect(() => {
     getProject(params.id);
@@ -42,7 +41,7 @@ const Project = () => {
         </div>
       </div>
       <button
-      onClick={() => setModalFormTask(true)}
+        onClick={handleModalTask}
         type="button"
         className="text-sm px-4 py-2 w-full md:w-auto rounded-lg uppercase font-Space text-secondary bg-secondary-hover text-center mt-4 flex gap-2 items-center justify-center hover:cursor-pointer hover:bg-secondary-light hover:font-bold"
       >
@@ -63,7 +62,7 @@ const Project = () => {
         New Task
       </button>
 
-      <MofalFormTask modalFormTask={modalFormTask} setModalFormTask={setModalFormTask}/>
+      <MofalFormTask />
     </>
   );
 };

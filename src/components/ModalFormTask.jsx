@@ -1,21 +1,51 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import Alert from "./Alert";
 
 const PRIORITY = ["Low", "Medium", "High"];
 
-const MofalFormTask = ({ modalFormTask, setModalFormTask }) => {
+const MofalFormTask = () => {
+  const [id, setId] = useState(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [dateDelivered, setDateDelivered] = useState("");
+  const [priority, setPriority] = useState("");
+
   const params = useParams();
-  //   const { modalFormTask, alert } = useProjects();
+  const { modalFormTask, alert, handleModalTask, showAlert, submitTask, task } = useProjects();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    //validate
+
+    if ([name, description, dateDelivered, priority].includes("")) {
+      showAlert({
+        msg: "All fields are required",
+        error: true,
+      });
+      return;
+    }
+
+
+    await submitTask({ id, name, description, dateDelivered, priority, project: params.id });
+    setId(null);
+    setName("");
+    setDescription("");
+    setDateDelivered("");
+    setPriority("");
+  };
+
+  const { msg } = alert;
 
   return (
     <Transition.Root show={modalFormTask} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
-        onClose={() => setModalFormTask(false)}
+        onClose={handleModalTask}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -52,7 +82,7 @@ const MofalFormTask = ({ modalFormTask, setModalFormTask }) => {
                 <button
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={() => setModalFormTask(false)}
+                  onClick={handleModalTask}
                 >
                   <span className="sr-only">Cerrar</span>
                   <svg
@@ -74,8 +104,90 @@ const MofalFormTask = ({ modalFormTask, setModalFormTask }) => {
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg leading-6 font-bold text-gray-900"
-                  ></Dialog.Title>
+                    className="text-lg leading-6 font-bold text-grayText"
+                  >
+                    Create Task
+                  </Dialog.Title>
+
+                  <form className="my-10" onSubmit={handleSubmit}>
+                    {msg && <Alert alert={alert} />}
+                    <div className="mb-5">
+                      <label
+                        htmlFor="name"
+                        className="text-grayText uppercase font-Poppins text-sm"
+                      >
+                        Task Name
+                      </label>
+                      <input
+                        id="name"
+                        type="text"
+                        placeholder="Task Name"
+                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mb-5">
+                      <label
+                        htmlFor="description"
+                        className="text-grayText uppercase font-Poppins text-sm"
+                      >
+                        Task Description
+                      </label>
+                      <textarea
+                        id="description"
+                        type="text"
+                        placeholder="Task Description"
+                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mb-5">
+                      <label
+                        htmlFor="date-delivered"
+                        className="text-grayText uppercase font-Poppins text-sm"
+                      >
+                        Date Delivery
+                      </label>
+                      <input
+                        id="date-delivered"
+                        type="date"
+                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
+                        value={dateDelivered}
+                        onChange={(e) => setDateDelivered(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mb-5">
+                      <label
+                        htmlFor="priority"
+                        className="text-grayText uppercase font-Poppins text-sm"
+                      >
+                        Priority
+                      </label>
+                      <select
+                        id="priority"
+                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                        value={priority}
+                        onChange={(e) => setPriority(e.target.value)}
+                      >
+                        <option value="">-- Select --</option>
+
+                        {PRIORITY.map((opcion) => (
+                          <option key={opcion}>{opcion}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <input
+                      type="submit"
+                      value={id ? "Update project" : "Create project"}
+                      className="bg-secondary my-5 w-full py-3 text-white uppercase rounded-lg hover:cursor-pointer hover:bg-primary hover:text-secondary transition-colors"
+                    />
+                  </form>
                 </div>
               </div>
             </div>
