@@ -19,7 +19,7 @@ const ProjectForm = () => {
       setId(project._id);
       setName(project.name);
       setDescription(project.description);
-      setDateDelivered(project.dateDelivered?.split('T')[0])
+      setDateDelivered(project.dateDelivered?.split("T")[0]);
       setClient(project.client);
     }
   }, [params]);
@@ -36,7 +36,7 @@ const ProjectForm = () => {
       });
       return;
     }
-
+    // Update and Create project
     await submitProject({ id, name, description, dateDelivered, client });
     setId(null);
     setName("");

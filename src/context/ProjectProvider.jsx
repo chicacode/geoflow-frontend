@@ -9,17 +9,16 @@ const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [alert, setAlert] = useState({});
   const [project, setProject] = useState({});
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-
     const getProjects = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-  
+
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -27,13 +26,12 @@ const ProjectProvider = ({ children }) => {
           },
         };
 
-        const { data } = await axiosClient('/projects', config);
-        setProjects(data)
-
+        const { data } = await axiosClient("/projects", config);
+        setProjects(data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     getProjects();
   }, []);
 
@@ -46,15 +44,14 @@ const ProjectProvider = ({ children }) => {
   };
 
   const submitProject = async (project) => {
-   if(project.id){
-    await updateProject(project)
-   }else{
-    await createProject(project)
-   }
+    if (project.id) {
+      await updateProject(project);
+    } else {
+      await createProject(project);
+    }
   };
 
-  const updateProject = async project => {
-
+  const updateProject = async (project) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -66,29 +63,35 @@ const ProjectProvider = ({ children }) => {
         },
       };
 
-      const { data } = await axiosClient.put(`/projects/${project.id}`, project, config)
+      const { data } = await axiosClient.put(
+        `/projects/${project.id}`,
+        project,
+        config
+      );
 
-     // Sync State
+      // Sync State
 
-     const updatedProjects = projects.map(projectState => projectState._id === data._id ? data : projectState)
-// TODO FIX this
-    setProjects(updatedProjects)
-
-
-     //Show alert
+      const updatedProjects = projects.map((projectState) =>
+        projectState._id === data._id ? data : projectState
+      );
+      setProjects(updatedProjects);
+      //Show alert
       setAlert({
         msg: "Project updated correctly",
         error: false,
       });
 
       // Redirect user
+      setTimeout(() => {
+        setAlert({});
+        navigate("/projects");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-
-  const createProject = async project =>{
+  const createProject = async (project) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -102,7 +105,7 @@ const ProjectProvider = ({ children }) => {
 
       const { data } = await axiosClient.post("/projects", project, config);
       //update state
-      setProjects([...projects, data])
+      setProjects([...projects, data]);
 
       setAlert({
         msg: "Project created correctly",
@@ -117,9 +120,9 @@ const ProjectProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const getProject = async id =>{
-    setLoading(true)
+  };
+  const getProject = async (id) => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -131,25 +134,70 @@ const ProjectProvider = ({ children }) => {
         },
       };
 
-      const { data } = await axiosClient(`/projects/${id}`, config)
-      setProject(data)
-      setAlert({})
+      const { data } = await axiosClient(`/projects/${id}`, config);
+      setProject(data);
+      setAlert({});
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,
-        error:true
-      })
+        error: true,
+      });
+
+      setTimeout(() => {
+        setAlert({});
+      }, 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteProject = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.delete(`/projects/${id}`, config);
+
+      //sync state
+
+      const updatedProjects = projects.filter(
+        (projectState) => projectState._id !== id
+      );
+      setProjects(updatedProjects);
+
+      setAlert({
+        msg: data.msg,
+        error: false,
+      });
 
       setTimeout(() =>{
         setAlert({})
+        navigate('/projects')
       }, 3000)
-    }finally{
-      setLoading(false)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
   return (
     <ProjectContext.Provider
-      value={{ projects, setProjects, alert, showAlert, submitProject, getProject, project, loading }}
+      value={{
+        projects,
+        setProjects,
+        alert,
+        showAlert,
+        submitProject,
+        getProject,
+        project,
+        loading,
+        deleteProject,
+      }}
     >
       {children}
     </ProjectContext.Provider>
