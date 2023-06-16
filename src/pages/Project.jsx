@@ -35,7 +35,7 @@ const Project = () => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-4 h-4"
             >
               <path
                 strokeLinecap="round"
@@ -81,6 +81,37 @@ const Project = () => {
           <p className="text-center my-5 p-10">No tasks</p>
         )}
       </div>
+
+      <>
+        <div className="flex items-center justify-between mt-10">
+          <p className="font-Poppins font-bold text-xl text-secondary">
+            Collaborators
+          </p>
+          <div className="flex items-center gap-2">
+            <Link
+              to={`/projects/new-collaborator/${project._id}`}
+              className="text-grayText hover:text-secondaryInfo"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+             
+            </Link>
+            <span className="uppercase font-Space font-bold text-grayText hover:text-secondaryInfo"> Add</span>
+          </div>
+        </div>
+      </>
       <MofalFormTask />
       <ModalFormDeleteTask />
     </>
