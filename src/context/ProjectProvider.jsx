@@ -190,13 +190,13 @@ const ProjectProvider = ({ children }) => {
 
   const handleModalTask = () => {
     setModalFormTask(!modalFormTask);
+    setTask({})
   };
 
   const submitTask = async (task) => {
-    if (task.id) {
+    if (task?.id) {
       await updateTask(task);
     } else {
-      console.log("Entra en create");
       await createTask(task);
     }
   };
@@ -220,6 +220,7 @@ const ProjectProvider = ({ children }) => {
       projectUpdated.tasks = [...projectUpdated.tasks, data];
       setProject(projectUpdated);
       setAlert({});
+      // Hide form
       setModalFormTask(false);
     } catch (error) {
       console.log(error);
@@ -242,9 +243,11 @@ const ProjectProvider = ({ children }) => {
 
       // Update state
       const projectUpdated = { ...project };
-      projectUpdated.tasks = [...projectUpdated.tasks, data];
+      projectUpdated.tasks =  projectUpdated.tasks.map(taskState => taskState._id === data._id ? data : taskState)
       setProject(projectUpdated);
       setAlert({});
+
+      // Hide form
       setModalFormTask(false);
     } catch (error) {
       console.log(error);
@@ -265,7 +268,6 @@ const ProjectProvider = ({ children }) => {
       const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config);
       setTask({});
       setAlert({});
-      console.log(data);
 
       // socket
       // socket.emit('cambiar estado', data)
@@ -273,6 +275,11 @@ const ProjectProvider = ({ children }) => {
       console.log(error.response);
     }
   };
+
+  const handleModalEditTask = task =>{
+    setTask(task)
+    setModalFormTask(true)
+  }
 
   return (
     <ProjectContext.Provider
@@ -291,6 +298,7 @@ const ProjectProvider = ({ children }) => {
         task,
         submitTask,
         completeTask,
+        handleModalEditTask
       }}
     >
       {children}

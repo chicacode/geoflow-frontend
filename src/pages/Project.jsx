@@ -14,7 +14,6 @@ const Project = () => {
 
   const { name } = project;
 
-  console.log("project", project);
   if (loading) return "Loading...";
   return (
     <>
@@ -68,9 +67,9 @@ const Project = () => {
       <p className="font-Poppins font-bold text-xl mt-10 text-secondary">Project Tasks</p>
       <div className='bg-white shadow mt-10 rounded-lg'>
                 {project.tasks?.length ? 
-                  project.tasks?.map( task => (
+                  project.tasks?.map( (task, idx) => (
                     <Task
-                      key={task._id}
+                      key={idx}
                       task={task}
                     />
                   )) : 

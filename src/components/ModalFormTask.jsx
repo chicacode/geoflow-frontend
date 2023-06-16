@@ -7,7 +7,7 @@ import Alert from "./Alert";
 const PRIORITY = ["Low", "Medium", "High"];
 
 const MofalFormTask = () => {
-  const [id, setId] = useState(null);
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [dateDelivered, setDateDelivered] = useState("");
@@ -16,6 +16,22 @@ const MofalFormTask = () => {
   const params = useParams();
   const { modalFormTask, alert, handleModalTask, showAlert, submitTask, task } = useProjects();
 
+  useEffect(() => {
+    if(task?._id){
+      setId(task._id)
+      setName(task.name);
+      setDescription(task.description);
+      setDateDelivered(task.dateDelivered?.split('T')[0]);
+      setPriority(task.priority);
+      return
+    }
+
+    setId("");
+    setName("");
+    setDescription("");
+    setDateDelivered("");
+    setPriority("");
+  }, [task])
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +48,7 @@ const MofalFormTask = () => {
 
 
     await submitTask({ id, name, description, dateDelivered, priority, project: params.id });
-    setId(null);
+    setId("");
     setName("");
     setDescription("");
     setDateDelivered("");
@@ -105,7 +121,7 @@ const MofalFormTask = () => {
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg leading-6 font-bold text-grayText"
+                    className="text-lg leading-6 font-bold text-secondary font-Poppins"
                   >
                     Create Task
                   </Dialog.Title>
@@ -115,7 +131,7 @@ const MofalFormTask = () => {
                     <div className="mb-5">
                       <label
                         htmlFor="name"
-                        className="text-grayText uppercase font-Poppins text-sm"
+                        className="text-secondary uppercase font-Poppins text-sm"
                       >
                         Task Name
                       </label>
@@ -123,7 +139,7 @@ const MofalFormTask = () => {
                         id="name"
                         type="text"
                         placeholder="Task Name"
-                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
+                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none text-grayText"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                       />
@@ -132,7 +148,7 @@ const MofalFormTask = () => {
                     <div className="mb-5">
                       <label
                         htmlFor="description"
-                        className="text-grayText uppercase font-Poppins text-sm"
+                        className="text-secondary uppercase font-Poppins text-sm"
                       >
                         Task Description
                       </label>
@@ -140,7 +156,7 @@ const MofalFormTask = () => {
                         id="description"
                         type="text"
                         placeholder="Task Description"
-                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
+                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none text-grayText"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                       />
@@ -149,14 +165,14 @@ const MofalFormTask = () => {
                     <div className="mb-5">
                       <label
                         htmlFor="date-delivered"
-                        className="text-grayText uppercase font-Poppins text-sm"
+                        className="text-secondary uppercase font-Poppins text-sm"
                       >
                         Date Delivery
                       </label>
                       <input
                         id="date-delivered"
                         type="date"
-                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none"
+                        className="w-full mt-3 p-3 border border-secondary-light rounded-xl bg-gray  focus:border-primary focus:outline-none text-grayText"
                         value={dateDelivered}
                         onChange={(e) => setDateDelivered(e.target.value)}
                       />
@@ -165,13 +181,13 @@ const MofalFormTask = () => {
                     <div className="mb-5">
                       <label
                         htmlFor="priority"
-                        className="text-grayText uppercase font-Poppins text-sm"
+                        className="text-secondary uppercase font-Poppins text-sm"
                       >
                         Priority
                       </label>
                       <select
                         id="priority"
-                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                        className="border border-secondary-light w-full p-2 mt-2 placeholder-gray-400 rounded-md focus:border-primary focus:outline-none text-grayText"
                         value={priority}
                         onChange={(e) => setPriority(e.target.value)}
                       >
