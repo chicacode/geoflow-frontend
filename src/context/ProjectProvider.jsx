@@ -12,6 +12,7 @@ const ProjectProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [modalFormTask, setModalFormTask] = useState(false);
   const [task, setTask] = useState({});
+  const [modalDeleteTask, setModalDeleteTask] = useState(false)
 
   const navigate = useNavigate();
 
@@ -281,6 +282,11 @@ const ProjectProvider = ({ children }) => {
     setModalFormTask(true)
   }
 
+  const handleModalDeleteTask = task =>{
+    setTask(task)
+    setModalDeleteTask(!modalDeleteTask)
+  }
+
   return (
     <ProjectContext.Provider
       value={{
@@ -298,7 +304,9 @@ const ProjectProvider = ({ children }) => {
         task,
         submitTask,
         completeTask,
-        handleModalEditTask
+        handleModalEditTask,
+        modalDeleteTask,
+        handleModalDeleteTask
       }}
     >
       {children}

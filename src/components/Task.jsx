@@ -3,7 +3,8 @@ import useProjects from "../hooks/useProjects";
 import PropTypes from "prop-types";
 
 const Task = ({ task }) => {
-  const { completeTask, handleModalEditTask } = useProjects();
+  const { completeTask, handleModalEditTask, handleModalDeleteTask } =
+    useProjects();
   const { name, description, priority, state, dateDelivered, _id } = task;
   return (
     <div className="border-b p-5 flex justify-between items-center">
@@ -44,10 +45,16 @@ const Task = ({ task }) => {
         >
           {state ? "Complete" : "Incomplete"}
         </button>
+        <button
+          className="bg-primary-light px-4 py-3 text-secondary uppercase  text-sm rounded-lg hover:bg-error hover:text-gray"
+          onClick={() => handleModalDeleteTask(task)}
+        >
+          Delete
+        </button>
         {/* {admin && ( 
                     <button
-                        className="bg-red-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
-                        onClick={() => handleModalEliminarTarea(tarea)}
+                        className="bg-error px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+                        onClick={() => handleModalDeleteTask(tarea)}
                     >Eliminar</button>
                 )} */}
       </div>

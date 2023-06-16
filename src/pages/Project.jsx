@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import MofalFormTask from "../components/ModalFormTask";
+import ModalFormDeleteTask from "../components/ModalFormDeleteTask";
 import Task from "../components/Task";
 
 const Project = () => {
@@ -76,6 +77,7 @@ const Project = () => {
                 <p className='text-center my-5 p-10'>No tasks</p>}
             </div>
       <MofalFormTask />
+      <ModalFormDeleteTask />
     </>
   );
 };
