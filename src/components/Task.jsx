@@ -7,7 +7,7 @@ const Task = ({ task }) => {
     useProjects();
   const { name, description, priority, state, dateDelivered, _id } = task;
   return (
-    <div className="border-b p-5 flex justify-between items-center">
+    <div className="p-5 flex justify-between items-center">
       <div className="flex flex-col  items-start">
         <p className="mb-1 text-xl">{name}</p>
         <p className="mb-1 text-sm text-secondary uppercase">{description}</p>

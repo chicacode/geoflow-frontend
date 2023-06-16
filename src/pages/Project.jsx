@@ -4,10 +4,12 @@ import useProjects from "../hooks/useProjects";
 import MofalFormTask from "../components/ModalFormTask";
 import ModalFormDeleteTask from "../components/ModalFormDeleteTask";
 import Task from "../components/Task";
+import Alert from "../components/Alert";
 
 const Project = () => {
   const params = useParams();
-  const { getProject, project, loading, handleModalTask } = useProjects();
+  const { getProject, project, loading, handleModalTask, alert } =
+    useProjects();
 
   useEffect(() => {
     getProject(params.id);
@@ -16,6 +18,8 @@ const Project = () => {
   const { name } = project;
 
   if (loading) return "Loading...";
+
+  const { msg } = alert;
   return (
     <>
       <div className="flex justify-between">
@@ -65,17 +69,18 @@ const Project = () => {
         New Task
       </button>
 
-      <p className="font-Poppins font-bold text-xl mt-10 text-secondary">Project Tasks</p>
-      <div className='bg-white shadow mt-10 rounded-lg'>
-                {project.tasks?.length ? 
-                  project.tasks?.map( (task, idx) => (
-                    <Task
-                      key={idx}
-                      task={task}
-                    />
-                  )) : 
-                <p className='text-center my-5 p-10'>No tasks</p>}
-            </div>
+      <p className="font-Poppins font-bold text-xl mt-10 text-secondary">
+        Project Tasks
+      </p>
+
+      {msg && <Alert alert={alert} />}
+      <div className="bg-white shadow mt-10 rounded-lg">
+        {project.tasks?.length ? (
+          project.tasks?.map((task, idx) => <Task key={idx} task={task} />)
+        ) : (
+          <p className="text-center my-5 p-10">No tasks</p>
+        )}
+      </div>
       <MofalFormTask />
       <ModalFormDeleteTask />
     </>

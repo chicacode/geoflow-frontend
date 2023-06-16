@@ -46,7 +46,7 @@ const ModalFormDeleteTask = () => {
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
                 <button
                   type="button"
-                  className="bg-white rounded-md text-gray hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                  className="rounded-md text-grayDarkOpacity26 hover:text-secondary focus:outline-none focus:ring-1 focus:ring-grayDarkOpacity26"
                   onClick={handleModalDeleteTask}
                 >
                   <span className="sr-only">Close</span>
