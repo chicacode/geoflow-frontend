@@ -13,6 +13,7 @@ const ProjectProvider = ({ children }) => {
   const [modalFormTask, setModalFormTask] = useState(false);
   const [task, setTask] = useState({});
   const [modalDeleteTask, setModalDeleteTask] = useState(false);
+  const [collaborator, setCollaborator] = useState({})
 
   const navigate = useNavigate();
 
@@ -326,6 +327,29 @@ const ProjectProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const submitCollaborator = async email  =>{
+
+    setLoading(true)
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axiosClient.post('/projects/collaborators', {email}, config)
+      setCollaborator(data)
+  
+      setAlert({})
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <ProjectContext.Provider
       value={{
@@ -347,6 +371,8 @@ const ProjectProvider = ({ children }) => {
         modalDeleteTask,
         handleModalDeleteTask,
         deleteTask,
+        submitCollaborator,
+        collaborator
       }}
     >
       {children}
