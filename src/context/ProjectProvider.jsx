@@ -271,12 +271,15 @@ const ProjectProvider = ({ children }) => {
         },
       };
       const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config);
-      console.log(data);
+
+      // Change state in UI
+      const projectUpdated = { ...project };
+      projectUpdated.tasks = projectUpdated.tasks.map((taskState) =>
+        taskState._id === data._id ? data : taskState
+      );
+      setProject(projectUpdated);
       setTask({});
       setAlert({});
-
-      // socket
-      // socket.emit('change state', data)
     } catch (error) {
       console.log(error.response);
     }
@@ -466,6 +469,7 @@ const ProjectProvider = ({ children }) => {
       console.log(error);
     }
   };
+
   return (
     <ProjectContext.Provider
       value={{

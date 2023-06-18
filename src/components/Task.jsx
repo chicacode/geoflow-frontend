@@ -30,18 +30,13 @@ const Task = ({ task }) => {
           Edit
         </button>
 
-        {/* {admin && (
-                    <button
-                        className="bg-indigo-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
-                        onClick={() => handleModalEditarTarea(tarea)}
-                    >Editar</button>
-
-                )}  */}
         <button
           className={`${
-            state ? "bg-primary" : "bg-primary-light"
-          } px-4 py-3 text-secondary uppercase font-Poppins text-sm rounded-lg hover:bg-primary-hover`}
-          onClick={() => completeTask(_id)}
+            state ? "bg-success text-gray hover:bg-success-hover hover:text-secondary" : "bg-primary-light text-secondary hover:bg-primary-hover"
+          } px-4 py-3 uppercase font-Poppins text-sm rounded-lg `}
+          onClick={() => {
+            completeTask(_id)
+          }}
         >
           {state ? "Complete" : "Incomplete"}
         </button>
@@ -51,12 +46,7 @@ const Task = ({ task }) => {
         >
           Delete
         </button>
-        {/* {admin && ( 
-                    <button
-                        className="bg-error px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
-                        onClick={() => handleModalDeleteTask(tarea)}
-                    >Eliminar</button>
-                )} */}
+
       </div>
     </div>
   );
