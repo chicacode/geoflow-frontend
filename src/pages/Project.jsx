@@ -85,7 +85,7 @@ const Project = () => {
       </div>
 
       <>
-        <div className="flex flex-col items-center justify-between mt-10">
+        <div className="items-center justify-between mt-10">
           <p className="font-Poppins font-bold text-xl text-secondary">
             Collaborators
           </p>
@@ -108,21 +108,27 @@ const Project = () => {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-             
             </Link>
-            <span className="uppercase font-Space font-bold text-grayText hover:text-secondaryInfo"> Add</span>
+            <span className="uppercase font-Space font-bold text-grayText hover:text-secondaryInfo">
+              {" "}
+              Add
+            </span>
           </div>
 
-          <div className='bg-secondaryInfo shadow mt-5 rounded-lg'>
-                    {project.colaborators?.length ? 
-                      project.colaborators?.map( collaborator => (
-                          <Collaborator 
-                              key={collaborator._id}
-                              collaborator={collaborator}
-                          />
-                      )) : 
-                    <p className='text-center my-5 p-5 capitalize'>no collaborators in this project</p>}
-                </div>
+          <div className="bg-secondaryInfo shadow mt-5 rounded-lg">
+            {project.colaborators?.length ? (
+              project.colaborators?.map((collaborator) => (
+                <Collaborator
+                  key={collaborator._id}
+                  collaborator={collaborator}
+                />
+              ))
+            ) : (
+              <p className="text-center my-5 p-5 capitalize">
+                no collaborators in this project
+              </p>
+            )}
+          </div>
         </div>
       </>
       <MofalFormTask />
