@@ -143,6 +143,7 @@ const ProjectProvider = ({ children }) => {
       setProject(data);
       setAlert({});
     } catch (error) {
+      navigate('/projects')
       setAlert({
         msg: error.response.data.msg,
         error: true,

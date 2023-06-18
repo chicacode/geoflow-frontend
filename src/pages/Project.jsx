@@ -6,12 +6,11 @@ import MofalFormTask from "../components/ModalFormTask";
 import ModalFormDeleteTask from "../components/ModalFormDeleteTask";
 import ModalFormDeleteCollaborator from "../components/ModalFormDeleteCollaborator";
 import Task from "../components/Task";
-import Alert from "../components/Alert";
 import Collaborator from "../components/Collaborator";
 
 const Project = () => {
   const params = useParams();
-  const { getProject, project, loading, handleModalTask, alert } =
+  const { getProject, project, loading, handleModalTask } =
     useProjects();
 
   const admin = useAdmin();
@@ -24,10 +23,8 @@ const Project = () => {
 
   if (loading) return "Loading...";
 
-  const { msg } = alert;
-  return msg && alert.error ? (
-    <Alert alert={alert} />
-  ) : (
+  return (
+
     <>
       <div className="flex justify-between">
         <h1 className="font-bold text-secondary text-2xl">{name}</h1>
