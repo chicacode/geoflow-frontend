@@ -3,8 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import MofalFormTask from "../components/ModalFormTask";
 import ModalFormDeleteTask from "../components/ModalFormDeleteTask";
+import ModalFormDeleteCollaborator from "../components/ModalFormDeleteCollaborator";
 import Task from "../components/Task";
 import Alert from "../components/Alert";
+import Collaborator from "../components/Collaborator";
 
 const Project = () => {
   const params = useParams();
@@ -83,7 +85,7 @@ const Project = () => {
       </div>
 
       <>
-        <div className="flex items-center justify-between mt-10">
+        <div className="flex flex-col items-center justify-between mt-10">
           <p className="font-Poppins font-bold text-xl text-secondary">
             Collaborators
           </p>
@@ -110,10 +112,22 @@ const Project = () => {
             </Link>
             <span className="uppercase font-Space font-bold text-grayText hover:text-secondaryInfo"> Add</span>
           </div>
+
+          <div className='bg-secondaryInfo shadow mt-5 rounded-lg'>
+                    {project.colaborators?.length ? 
+                      project.colaborators?.map( collaborator => (
+                          <Collaborator 
+                              key={collaborator._id}
+                              collaborator={collaborator}
+                          />
+                      )) : 
+                    <p className='text-center my-5 p-5 capitalize'>no collaborators in this project</p>}
+                </div>
         </div>
       </>
       <MofalFormTask />
       <ModalFormDeleteTask />
+      <ModalFormDeleteCollaborator />
     </>
   );
 };
