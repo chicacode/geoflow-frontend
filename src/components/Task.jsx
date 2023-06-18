@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 const Task = ({ task }) => {
   const { completeTask, handleModalEditTask, handleModalDeleteTask } =
     useProjects();
+
   const { name, description, priority, state, dateDelivered, _id } = task;
+
+  console.log()
   return (
     <div className="p-5 flex justify-between items-center">
       <div className="flex flex-col  items-start">
@@ -20,7 +23,7 @@ const Task = ({ task }) => {
             {priority}
           </span>
         </p>
-        {/* { estado && <p className="text-xs bg-green-600 uppercase p-1 rounded-lg text-white">Completada por: {tarea.completado.nombre}</p>} */}
+        { state || task.completed ? <p className="text-xs bg-success-light font-Poppins py-1 px-3 rounded-xl text-secondary">Completed by: {task?.completed?.name}</p> : null}
       </div>
       <div className="flex flex-col lg:flex-row gap-2">
         <button
