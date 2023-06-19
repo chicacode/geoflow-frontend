@@ -5,7 +5,14 @@ import Search from "./Search";
 
 const Header = () => {
 
-  const { handleSearch } = useProjects()
+  const { handleSearch, signOut } = useProjects();
+  const { sighOutAuth } = useAuth();
+
+  const handleSignOut = () => {
+    sighOutAuth()
+    signOut()
+    localStorage.removeItem('')
+  }
   return (
     <header className="px-4 py-5 bg-secondaryInfo shadow items-center">
       <div className="md:flex md:justify-between items-center">
@@ -33,6 +40,7 @@ const Header = () => {
           <button
             type="button"
             className="text-white text-xs bg-primary-light p-2 rounded-xl hover:cursor-pointer hover:bg-primary-hover hover:border border-primary hover:text-white"
+            onClick={handleSignOut}
           >
             Sign Out
           </button>

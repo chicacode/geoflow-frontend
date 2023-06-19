@@ -39,8 +39,12 @@ const AuthProvider = ({ children }) => {
 
     usertAuth();
   }, []);
+
+  const sighOutAuth = () => {
+    setAuth({})
+  }
   return (
-    <AuthContext.Provider value={{ auth, setAuth, loading, setLoading }}>
+    <AuthContext.Provider value={{ auth, setAuth, loading, setLoading, sighOutAuth }}>
       {children}
     </AuthContext.Provider>
   );

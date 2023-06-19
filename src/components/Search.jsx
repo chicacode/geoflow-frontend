@@ -37,7 +37,10 @@ const Search = () => {
                 >
                 <Combobox
                     as="div"
-                    className="mx-auto max-w-xl transform divide-y divide-grayText overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-primary ring-opacity-5 transition-all"
+                    className="mx-auto max-w-xl transform divide-y divide-grayText overflow-hidden rounded-xl bg-white shadow-2xl ring-primary transition-all"
+                    onChange={(project) => {console.log(project)}
+                    
+                    }
                 >
                     <div className="relative">
                         <Combobox.Input

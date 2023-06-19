@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import PropTypes from "prop-types";
 import axiosClient from "../config/axiosClient";
 
@@ -18,6 +19,7 @@ const ProjectProvider = ({ children }) => {
   const [search, setSearch] = useState(false);
 
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   useEffect(() => {
     const getProjects = async () => {
@@ -39,7 +41,7 @@ const ProjectProvider = ({ children }) => {
       }
     };
     getProjects();
-  }, []);
+  }, [auth]);
 
   const showAlert = (alert) => {
     setAlert(alert);
@@ -476,6 +478,12 @@ const ProjectProvider = ({ children }) => {
     setSearch(!search)
   }
 
+  const signOut = () =>{
+    setProjects([])
+    setProject({})
+    setAlert({})
+  }
+
   return (
     <ProjectContext.Provider
       value={{
@@ -505,7 +513,8 @@ const ProjectProvider = ({ children }) => {
         handleModalDeleteCollaborator,
         modalDeleteCollaborator,
         search,
-        handleSearch
+        handleSearch,
+        signOut
       }}
     >
       {children}
